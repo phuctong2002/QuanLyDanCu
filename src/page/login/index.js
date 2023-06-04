@@ -68,7 +68,7 @@ const Login = () => {
               >
                 Log in
               </Button>
-              Or <a className="text-[#4096FF]" href="">register now!</a>
+              {/* Or <a className="text-[#4096FF]" href="">register now!</a> */}
             </Form.Item>
           </Form>
         </div>

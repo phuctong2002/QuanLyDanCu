@@ -1,15 +1,24 @@
 const { Fragment } = require("react")
-const { default: Login } = require("../page/login")
+const { default: Login } = require("../page/login/index")
 const { default: MyLayout } = require("../component/MyLayout")
-const {default: NhanKhau } = require("../page/home/NhanKhau")
-
+const {default: HoKhau } = require("../page/home/HoKhau")
+const {default: LoginPage } = require("../page/login/LoginPage")
+const { default: Member } = require("../page/thanhvien")
+const { default: People } = require("../page/nhankhau")
+const { default: TamTru } = require("../page/tamtru")
+const { default: TamVang } = require("../page/tamvang")
+// import LoginPage from "../page/login/LoginPage"
 const publicRoute =[
-    {component: Login, layout: Fragment, path: "/login"},
+    {component: LoginPage, layout: Fragment, path: "/login"},
 ]
 
 const privateRoute = [
-    {component: NhanKhau, layout: MyLayout, path: "/"}
-]
+    {component: HoKhau, layout: MyLayout, path: "/"},
+    {component: Member, layout: MyLayout, path: "/hokhau/:id/"},
+    {component: People, layout: MyLayout, path: "/nhankhau"},
+    {component: TamTru, layout: MyLayout, path: "/tamtru"},
+    {component: TamVang, layout: MyLayout, path: "/tamvang"},
+]   
 
 
 module.exports = {privateRoute, publicRoute}

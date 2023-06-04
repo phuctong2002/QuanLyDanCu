@@ -9,34 +9,39 @@ import {
 } from "@ant-design/icons";
 import { Breadcrumb,Button, Layout, Menu, theme } from "antd";
 import { useState } from "react";
+import {BsFillHouseFill, BsFillPeopleFill, BsHouseAddFill, BsHouseDashFill} from "react-icons/bs"
+import {HiReceiptTax} from "react-icons/hi";
+import { useNavigate } from "react-router-dom";
 const { Header, Content, Footer, Sider } = Layout;
-function getItem(label, key, icon, children) {
+
+function getItem(label, key, icon, route) {
   return {
     key,
     icon,
-    children,
+    route,
     label,
   };
 }
+
 const items = [
-  getItem("Nhân khẩu", "1", <PieChartOutlined />),
-  getItem("Hộ khẩu", "2", <DesktopOutlined />),
-  getItem("Tạm trú", "sub1", <UserOutlined />, [
-    getItem("Tom", "3"),
-    getItem("Bill", "4"),
-    getItem("Alex", "5"),
-  ]),
-  getItem("Tạm vắng", "sub2", <TeamOutlined />, [
-    getItem("Team 1", "6"),
-    getItem("Team 2", "8"),
-  ]),
-  getItem("Thu phí, đóng góp", "9", <FileOutlined />),
+  getItem("Ho Khau", "1", <BsFillHouseFill/>, "/"),
+  getItem("Nhan Khau", "2", <BsFillPeopleFill />, "/nhankhau"),
+  getItem("Tam tru", "3", <BsHouseAddFill/>, "/tamtru"),
+  getItem("Tam vang", "4", <BsHouseDashFill />, "/tamvang"),
+  getItem("Thu phí, đóng góp", "9", <HiReceiptTax />, "/phi"),
 ];
 const MyLayout = ({ children }) => {
   const [collapsed, setCollapsed] = useState(false);
+  const navigate = useNavigate();
   const {
     token: { colorBgContainer },
   } = theme.useToken();
+  const handleLogout = ()=>{
+    sessionStorage.removeItem("token");
+    navigate("/login");
+  }
+
+
   return (
     <Layout
       style={{
@@ -57,10 +62,18 @@ const MyLayout = ({ children }) => {
         />
         <Menu
           theme="dark"
-          defaultSelectedKeys={["1"]}
+          defaultSelectedKeys={["0"]}
           mode="inline"
-          items={items}
-        />
+          // items={items}
+        >
+          {
+            items.map( (item, index)=>{
+              return <Menu.Item key={index} icon={item.icon} onClick={()=> navigate(item.route)}>
+                {item.label}
+              </Menu.Item>
+            })
+          }
+        </Menu>
       </Sider>
       <Layout className="site-layout">
         <Header className="flex justify-end items-center"
@@ -69,42 +82,25 @@ const MyLayout = ({ children }) => {
             background: colorBgContainer,
           }}
         >
-          <Button className="flex items-center bg-[#334454] mr-[50px]" type="primary" icon={<LogoutOutlined className="block text-[16px]"/>}>
+          <Button onClick={handleLogout} className="flex items-center bg-[#334454] mr-[50px]" type="primary" icon={<LogoutOutlined  className="block text-[16px]"/>}>
             Log out
           </Button>
         </Header>
         <Content
           style={{
-            margin: "0 16px",
+            margin: "20px 20px",
           }}
         >
-          {/* <Breadcrumb
-            style={{
-              margin: '16px 0',
-            }}
-          >
-            <Breadcrumb.Item>User</Breadcrumb.Item>
-            <Breadcrumb.Item>Bill</Breadcrumb.Item>
-          </Breadcrumb> */}
           <div
-            className="h-[100%]"
+            className="h-[100%] shadow-lg rounded-lg p-4"
             style={{
               padding: 24,
-              //   minHeight: 360,
-
               background: colorBgContainer,
             }}
           >
             {children}
           </div>
         </Content>
-        {/* <Footer
-          style={{
-            textAlign: 'center',
-          }}
-        >
-          Ant Design ©2023 Created by Ant UED
-        </Footer> */}
       </Layout>
     </Layout>
   );

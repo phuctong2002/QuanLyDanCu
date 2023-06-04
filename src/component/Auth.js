@@ -1,7 +1,11 @@
-const { Outlet } = require("react-router-dom")
+const { Outlet, Navigate } = require("react-router-dom")
 
 const Auth = ()=>{
-    return <Outlet/>
+    const token = sessionStorage.getItem("token");
+    if( token ){
+        return <Outlet/>
+    }
+    return <Navigate to="/login"/>
 }
 
 export default Auth;
