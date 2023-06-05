@@ -3,15 +3,12 @@ import {
     DatePicker,
     Form,
     Input,
-    Space,
     Table,
-    Modal,
-    message, 
-    Popconfirm
+    Modal
 } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {IoMdAdd} from "react-icons/io";
 import { useParams } from "react-router-dom";
 import 'moment/locale/vi'; // Import locale (tiếng Việt trong ví dụ này)
@@ -77,7 +74,7 @@ const Member = ()=>{
     const [isOpen, setIsOpen] = useState( false);
     const [ngaysinh, setNgaysinh] = useState(null);
     const [form] = useForm();
-    const [load, setLoad] = useState(0);
+    const [load, setLoad] = useState(1);
     const {id} = useParams();
 
     const handleAdd = ()=>{
@@ -110,9 +107,9 @@ const Member = ()=>{
             }
         }) 
             .then( res =>{
-                console.log(res);
-                const tmp = load + 1;
-                setLoad(tmp);
+                console.log(res.data);
+                
+                setLoad(load + 1);
             })   
             .catch( err =>{
                 console.log(err);
@@ -128,7 +125,7 @@ const Member = ()=>{
         }
     }
 
-    useState( ()=>{
+    useEffect( ()=>{
         axios.get(`/api/v1/thanhvien/${id}`, {
             headers: {
                 Authorization: "Bearer " + sessionStorage.getItem("token")
